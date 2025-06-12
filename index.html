@@ -674,6 +674,58 @@
             transition: color 0.5s ease;
         }
 
+        /* Search Input Styles */
+        .search-input {
+            background-color: var(--section-box-bg);
+            color: var(--light-text);
+            border: 1px solid var(--border-color);
+            border-radius: 9999px;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            width: 150px;
+        }
+        .search-input::placeholder {
+            color: var(--medium-gray);
+        }
+        .search-input:focus {
+            outline: none;
+            width: 250px; /* Expand on focus */
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+        }
+        .search-results-container {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            width: 280px;
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            z-index: 1010;
+            overflow: hidden;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            color: var(--light-text);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .search-result-item:hover {
+            background-color: var(--primary-color);
+            color: var(--dark-background);
+        }
+        .highlight-search {
+            transition: all 0.5s ease-in-out;
+            box-shadow: 0 0 15px 5px var(--primary-color);
+            border-radius: 1.25rem;
+        }
+
     </style>
 </head>
 <body class="antialiased loading projects-bg-active" data-theme="zima">
@@ -714,11 +766,19 @@
                         </h1>
                     </div>
                     <div class="flex items-center">
-                        <div class="hidden md:block">
-                            <div class="ml-10 flex items-baseline space-x-4">
+                        <div class="hidden md:flex items-center">
+                            <div class="flex items-baseline space-x-4">
                                 <a href="#projetos" class="nav-link active">Projetos</a>
                                 <a href="#resumo" class="nav-link">Currículo</a>
                                 <a href="#contato" class="nav-link">Contato</a>
+                            </div>
+
+                             <!-- Search Input -->
+                            <div class="relative ml-6">
+                                <input type="search" id="searchInput" placeholder="Buscar..." class="search-input">
+                                <div id="searchResults" class="search-results-container hidden">
+                                    <!-- Search results will be populated here -->
+                                </div>
                             </div>
                         </div>
 
@@ -745,6 +805,12 @@
                 <a href="#projetos" class="block nav-link text-base p-4">Projetos</a>
                 <a href="#resumo" class="block nav-link text-base p-4">Currículo</a>
                 <a href="#contato" class="block nav-link text-base p-4">Contato</a>
+                 <div class="p-4">
+                    <input type="search" id="mobileSearchInput" placeholder="Buscar..." class="search-input w-full">
+                    <div id="mobileSearchResults" class="search-results-container relative mt-2 w-full right-auto hidden">
+                        <!-- Mobile search results -->
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -866,7 +932,7 @@
                         </div>
                         <div class="experience-details hidden mt-4">
                             <div class="text-summary">
-                                <p>Como Especialista e Team Leader de Prevenção, liderei a estratégia e gestão de prevenção, possuindo sólida experiência na parametrização de regras de negócio, no controle de processos para atendimento de demandas judiciais, atendimento a canais regulatórios como Reclame Aqui, Banco Central (Bacen) e Procon.</p> 
+                                <p>Especialista em estratégia e gestão de prevenção, com experiência na parametrização de regras de negócio para crédito, onboarding (KYC e KYE) e controle de processos judiciais. Atuação no atendimento a canais regulatórios (Reclame Aqui, Bacen, Procon) para identificar riscos de PLD/AML em transações de Cash-in, Cash-out e P2P.</p> 
                                 <p>Na gestão de equipes, destaquei pelo desenvolvimento da produtividade e pela aplicação de feedbacks estruturados, além da realização de reuniões individuais (1:1) focadas na evolução profissional dos colaboradores. Demonstrei entusiasmo pela melhoria contínua, implementando fluxos de qualidade que otimizaram o desempenho.</p> 
                                 <p>A abordagem em indicadores e estratégia baseou-se no uso de frameworks robustos como PDCA, SIPOC e DMAIC para o monitoramento preciso de OKRs e KPIs. Tive experiência na implementação de motores de regras para assegurar a integridade das transações e no desenvolvimento de estratégias avançadas para mitigação de riscos e prevenção de fraudes.</p> 
                                 <p>No desenvolvimento de processos e produtos, atuei como P.O dentro de prevenção, liderando a criação de soluções que responderam diretamente à Voz do Cliente (VOC). Fui responsável pela otimização de fluxos e pela reestruturação de áreas para novas demandas, visando maior eficiência e alinhamento estratégico.</p> 
@@ -917,7 +983,7 @@
                         </div>
                     </div>
 
-                    <div class="experience-item card p-6">
+                    <div id="experience-magalu" class="experience-item card p-6">
                         <div class="experience-header flex justify-between items-start">
                             <div>
                                 <h3>Analista de Riscos</h3>
@@ -1958,7 +2024,7 @@
                         targetElement.scrollIntoView({ behavior: 'smooth' });
                     }, 50);
                 } else {
-                    window.scrollTo(0, 0);
+                    window.scrollTo({ top: 0, behavior: 'smooth'});
                 }
             }
 
@@ -1974,7 +2040,12 @@
                         showPage('resume', '#competencias');
                         updateActiveNav('#resumo');
                     } else if (targetId === '#contato') {
-                        showPage('projects', '#contato');
+                        // Check which page is active to decide where to scroll
+                        if (mainContent.classList.contains('hidden')) { // We are on projects page
+                            showPage('projects', '#contato');
+                        } else { // We are on resume page, need to switch
+                             showPage('projects', '#contato');
+                        }
                         updateActiveNav('#contato');
                     }
                     
@@ -2017,6 +2088,201 @@
                 const nextTheme = themes[currentThemeIndex];
                 document.body.setAttribute('data-theme', nextTheme);
             });
+
+            // --- Search Functionality ---
+            // Function to extract text from an element and its children
+            const getTextFromElement = (elementId) => {
+                const element = document.getElementById(elementId);
+                return element ? element.innerText : '';
+            };
+
+            const searchableContent = [
+                { 
+                    title: 'Início (Projetos)', 
+                    keywords: 'início projetos resumo principal sobre mim', 
+                    targetId: 'resumo-main', 
+                    page: 'projects',
+                    content: getTextFromElement('resumo-main')
+                },
+                { 
+                    title: 'Competências', 
+                    keywords: 'competências skills habilidades sql power bi', 
+                    targetId: 'competencias', 
+                    page: 'resume',
+                    content: getTextFromElement('competencias')
+                },
+                { 
+                    title: 'Experiência: Renner', 
+                    keywords: 'renner omnichannel analista', 
+                    targetId: 'experience-renner', 
+                    page: 'resume',
+                    content: getTextFromElement('experience-renner')
+                },
+                { 
+                    title: 'Experiência: Jeitto', 
+                    keywords: 'jeitto especialista team leader kyc kye aml', 
+                    targetId: 'experience-jeitto', 
+                    page: 'resume',
+                    content: getTextFromElement('experience-jeitto')
+                },
+                { 
+                    title: 'Experiência: Magalu', 
+                    keywords: 'magalu magazine luiza fintech riscos mapa do maroto', 
+                    targetId: 'experience-magalu', 
+                    page: 'resume',
+                    content: getTextFromElement('experience-magalu')
+                },
+                { 
+                    title: 'Experiência: TIM', 
+                    keywords: 'tim brasil analista riscos prospect consumer', 
+                    targetId: 'experience-tim', 
+                    page: 'resume',
+                    content: getTextFromElement('experience-tim')
+                },
+                { 
+                    title: 'Projeto: Redução de Custos KYC', 
+                    keywords: 'kyc jeitto custos onboarding cac', 
+                    targetId: 'kyc-project', 
+                    page: 'projects',
+                    content: getTextFromElement('kyc-project')
+                },
+                { 
+                    title: 'Projeto: Prospect Consumer', 
+                    keywords: 'prospect consumer tim ativação biometria', 
+                    targetId: 'prospect-consumer-project', 
+                    page: 'projects',
+                    content: getTextFromElement('prospect-consumer-project')
+                },
+                { 
+                    title: 'Projeto: Mapa do Maroto', 
+                    keywords: 'mapa maroto magalu formulário html css padronização', 
+                    targetId: 'maroto-project', 
+                    page: 'projects',
+                    content: getTextFromElement('maroto-project')
+                },
+                { 
+                    title: 'Formação Acadêmica', 
+                    keywords: 'formação acadêmica faculdade mba fm2s anhanguera', 
+                    targetId: 'formacao', 
+                    page: 'resume',
+                    content: getTextFromElement('formacao')
+                },
+                { 
+                    title: 'Recomendações', 
+                    keywords: 'recomendações feedback depoimentos victor rodnei paulo', 
+                    targetId: 'recomendacoes', 
+                    page: 'projects',
+                    content: getTextFromElement('recomendacoes')
+                },
+                { 
+                    title: 'Ferramentas e Tecnologias', 
+                    keywords: 'ferramentas tecnologias axur serasa provenir clearsale cybersource', 
+                    targetId: 'ferramentas', 
+                    page: 'resume',
+                    content: getTextFromElement('ferramentas')
+                },
+                { 
+                    title: 'Contato', 
+                    keywords: 'contato email linkedin carta', 
+                    targetId: 'contato', 
+                    page: 'projects',
+                    content: getTextFromElement('contato')
+                },
+            ];
+
+            const searchInput = document.getElementById('searchInput');
+            const searchResultsContainer = document.getElementById('searchResults');
+            const mobileSearchInput = document.getElementById('mobileSearchInput');
+            const mobileSearchResultsContainer = document.getElementById('mobileSearchResults');
+
+            function highlightElement(element) {
+                if (!element) return;
+                element.classList.add('highlight-search');
+                setTimeout(() => {
+                    element.classList.remove('highlight-search');
+                }, 2500); // Highlight for 2.5 seconds
+            }
+
+            function handleResultClick(result) {
+                showPage(result.page, '#' + result.targetId);
+                setTimeout(() => {
+                    const targetElement = document.getElementById(result.targetId);
+                    highlightElement(targetElement);
+
+                    // If it's a collapsed experience item, expand it
+                    if (targetElement.classList.contains('experience-item')) {
+                        const details = targetElement.querySelector('.experience-details');
+                        const icon = targetElement.querySelector('.expand-icon');
+                        if (details && details.classList.contains('hidden')) {
+                            details.classList.remove('hidden');
+                            icon.textContent = '−';
+                            icon.style.transform = 'rotate(180deg)';
+                        }
+                    }
+                }, 100);
+
+                // Clear and hide search
+                searchInput.value = '';
+                mobileSearchInput.value = '';
+                searchResultsContainer.innerHTML = '';
+                searchResultsContainer.classList.add('hidden');
+                mobileSearchResultsContainer.innerHTML = '';
+                mobileSearchResultsContainer.classList.add('hidden');
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            }
+            
+            function displayResults(results, container) {
+                container.innerHTML = '';
+                if (results.length === 0) {
+                    container.classList.add('hidden');
+                    return;
+                }
+
+                results.slice(0, 4).forEach(result => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'search-result-item';
+                    itemDiv.textContent = result.title;
+                    itemDiv.addEventListener('click', () => handleResultClick(result));
+                    container.appendChild(itemDiv);
+                });
+
+                container.classList.remove('hidden');
+            }
+
+            function handleSearchInput(event) {
+                const query = event.target.value.toLowerCase().trim();
+                const container = event.target.id === 'searchInput' ? searchResultsContainer : mobileSearchResultsContainer;
+
+                if (query.length < 2) {
+                    container.innerHTML = '';
+                    container.classList.add('hidden');
+                    return;
+                }
+                
+                // NEW: Search logic now includes the full content
+                const filteredResults = searchableContent.filter(item => {
+                    const fullText = `${item.title} ${item.keywords} ${item.content || ''}`.toLowerCase();
+                    return fullText.includes(query);
+                });
+                
+                displayResults(filteredResults, container);
+            }
+
+            searchInput.addEventListener('input', handleSearchInput);
+            mobileSearchInput.addEventListener('input', handleSearchInput);
+
+            // Hide results when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !searchResultsContainer.contains(e.target)) {
+                    searchResultsContainer.classList.add('hidden');
+                }
+                 if (!mobileSearchInput.contains(e.target) && !mobileSearchResultsContainer.contains(e.target)) {
+                    mobileSearchResultsContainer.classList.add('hidden');
+                }
+            });
+
         });
     </script>
 </body>
