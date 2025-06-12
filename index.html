@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jonatha Neri Cardoso - Portfólio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root, body[data-theme="zima"] {
+            --primary-color: #00BFFF; /* Zima Blue */
+            --dark-background: #222222;
+            --light-text: #f0f0f0;
+            --medium-gray: #a0a0a0;
+            --card-background: rgba(51, 51, 51, 0.85);
+            --section-box-bg: rgba(34, 34, 34, 0.7);
+            --border-color: #555555;
+            --gradient-start: #00BFFF;
+            --gradient-end: #ffffff;
+            --gradient-angle: 45deg;
+        }
+
+        body[data-theme="ocean"] {
+            --primary-color: #14b8a6; /* Teal */
+            --dark-background: #0f172a;
+            --light-text: #e2e8f0;
+            --medium-gray: #94a3b8;
+            --card-background: rgba(30, 41, 59, 0.85);
+            --section-box-bg: rgba(15, 23, 42, 0.7);
+            --border-color: #334155;
+            --gradient-start: #14b8a6;
+            --gradient-end: #67e8f9;
+            --gradient-angle: 45deg;
+        }
+
+        body[data-theme="sunset"] {
+            --primary-color: #fb923c; /* Soft Orange */
+            --dark-background: #1c1917;
+            --light-text: #f5f5f4;
+            --medium-gray: #a8a29e;
+            --card-background: rgba(41, 37, 36, 0.85);
+            --section-box-bg: rgba(28, 25, 23, 0.7);
+            --border-color: #44403c;
+            --gradient-start: #fb923c;
+            --gradient-end: #fcd34d;
+            --gradient-angle: 45deg;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--light-text);
+            line-height: 1.75;
+            scroll-behavior: smooth;
+            background-color: var(--dark-background);
+            position: relative;
+            z-index: 1;
+            transition: background-color 0.5s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('https://i.pinimg.com/736x/fd/b3/03/fdb303443cf100a1302eaf9a05d175f4.jpg');
+            transition: background-image 0.5s ease-in-out, filter 0.5s ease-in-out;
+            filter: brightness(100%);
+        }
+        
+        body.projects-bg-active::before {
+            background-image: url('https://i.pinimg.com/736x/a4/9f/ff/a49fffa272cc656f4b74c3938624fc58.jpg');
+            filter: grayscale(100%) brightness(30%);
+        }
+
+        .content-overlay {
+            background-color: rgba(34, 34, 34, 0.2);
+            position: relative;
+            transition: background-color 0.5s ease;
+        }
+        
+        body.projects-bg-active .content-overlay {
+            background-color: transparent;
+        }
+
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-background);
+            background-image: linear-gradient(rgba(34, 34, 34, 0.85), rgba(34, 34, 34, 0.85)), url('https://i.pinimg.com/736x/19/0f/10/190f10fafa504ad21486c9ced6161349.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.75s ease;
+        }
+
+        #preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .preloader-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preloader-shield {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 2rem;
+        }
+
+        .preloader-shield .shield-path,
+        .preloader-shield .shield-text {
+            animation: shield-glow 6s linear infinite;
+        }
+        
+        @keyframes shield-glow {
+            0%, 100% {
+                stroke: #00BFFF;
+                filter: drop-shadow(0 0 6px #00BFFF) drop-shadow(0 0 12px #00BFFF);
+            }
+            33.3% {
+                stroke: #14b8a6;
+                filter: drop-shadow(0 0 6px #14b8a6) drop-shadow(0 0 12px #14b8a6);
+            }
+            66.6% {
+                stroke: #fb923c;
+                filter: drop-shadow(0 0 6px #fb923c) drop-shadow(0 0 12px #fb923c);
+            }
+        }
+        
+        .welcome-message {
+            font-family: 'Inter', sans-serif;
+            font-size: 3.6rem;
+            font-weight: 800;
+            text-align: center;
+            padding: 1rem;
+            line-height: 1.2;
+            color: var(--light-text);
+            animation: epicFadeIn 2s ease-out forwards;
+        }
+
+        @keyframes epicFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        body.loading > *:not(#preloader) {
+            opacity: 0;
+        }
+        
+        body:not(.loading) > *:not(#preloader) {
+           opacity: 1;
+           transition: opacity 0.5s ease-in-out;
+        }
+
+        .header-bg {
+            background-color: rgba(34, 34, 34, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--light-text);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-title {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            background: -webkit-linear-gradient(var(--gradient-angle), var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+        }
+        .logo-header {
+            height: 40px;
+            width: auto;
+        }
+        .nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            color: var(--light-text);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .nav-link:hover {
+            background-color: var(--primary-color);
+            color: var(--dark-background);
+        }
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: var(--dark-background);
+        }
+
+        #profile-picture {
+            border-color: var(--primary-color);
+            transition: border-color 0.5s ease;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 3.5rem;
+            }
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 2px;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.5s ease;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .experience-item#experience-renner { border-left-color: #ff0000; }
+        .experience-item#experience-renner::before { background-color: #ff0000; }
+        .experience-item#experience-jeitto { border-left-color: #dd6b20; }
+        .experience-item#experience-jeitto::before { background-color: #dd6b20; }
+        .experience-item#experience-tim { border-left-color: #1a3a5a; }
+        .experience-item#experience-tim::before { background-color: #1a3a5a; }
+
+        .section-box {
+            background-color: var(--section-box-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .skill-badge {
+            background: linear-gradient(var(--gradient-angle), var(--gradient-start), var(--gradient-end));
+            color: var(--dark-background);
+            padding: 0.6rem 1.2rem;
+            border-radius: 9999px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        .skill-badge:hover {
+            background: linear-gradient(var(--gradient-angle), var(--gradient-end), var(--gradient-start));
+            color: var(--dark-background);
+        }
+
+        .experience-item {
+            border-left-width: 4px;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 1rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 3px solid var(--dark-background); 
+        }
+        .experience-header { cursor: pointer; }
+        .experience-item h3 {
+            color: var(--light-text);
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+        }
+         @media (min-width: 768px) { .experience-item h3 { font-size: 1.75rem; } }
+        .experience-item .experience-header p { color: var(--medium-gray); font-size: 0.9rem; }
+        @media (min-width: 768px) { .experience-item .experience-header p { font-size: 1rem; } }
+        .experience-item .experience-details .text-summary p {
+            color: var(--light-text);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        @media (min-width: 768px) { .experience-item .experience-details .text-summary p { font-size: 1.05rem; } }
+
+        .experience-item .experience-details ul { 
+            color: var(--medium-gray);
+            margin-top: 1rem;
+            font-size: 1rem;
+            padding-left: 0; 
+            list-style-type: none; 
+        }
+         .experience-item .experience-details .highlight-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.85rem;
+        }
+        .experience-item .experience-details .highlight-list .icon-bullet {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.75rem;
+            fill: var(--primary-color);
+            flex-shrink: 0;
+        }
+        
+        .impact-markers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around; 
+            align-items: flex-start; 
+            margin-top: 1.5rem; 
+            padding-top: 1rem; 
+            border-top: 1px solid var(--border-color);
+            gap: 1rem;
+        }
+        .impact-marker {
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            text-align: center;
+            color: var(--light-text);
+            flex: 1 1 90px;
+            padding: 0 0.5rem; 
+        }
+        .impact-marker svg {
+            width: 40px;
+            height: 40px; 
+            margin-bottom: 0.5rem; 
+            filter: drop-shadow(0 0 4px var(--primary-color)) drop-shadow(0 0 8px var(--primary-color)) drop-shadow(0 0 12px var(--primary-color));
+            overflow: visible; 
+        }
+         .impact-marker svg path, .impact-marker svg circle, .impact-marker svg line, .impact-marker svg polyline, .impact-marker svg rect {
+            stroke: url(#neonGradient); 
+            stroke-width: 1.5; 
+            fill: none; 
+            vector-effect: non-scaling-stroke; 
+        }
+        .impact-marker span {
+            font-size: 0.8rem;
+            font-weight: 600; 
+            line-height: 1.3;
+            max-width: 110px; 
+            color: var(--light-text); 
+        }
+        @media (min-width: 768px) {
+             .impact-marker svg { width: 48px; height: 48px; }
+             .impact-marker span { font-size: 0.85rem; }
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+            font-size: 1.8rem;
+            line-height: 1;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .logo-carousel, .recommendation-carousel-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+            cursor: grab;
+        }
+        .logo-carousel.grabbing, .recommendation-carousel-container.grabbing { cursor: grabbing; }
+
+        .logo-carousel::before,
+        .logo-carousel::after,
+        .recommendation-carousel-container::before,
+        .recommendation-carousel-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 100px;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+        @media (min-width: 768px) {
+            .logo-carousel::before, .logo-carousel::after,
+            .recommendation-carousel-container::before, .recommendation-carousel-container::after { width: 150px; }
+        }
+        
+        body.projects-bg-active .logo-carousel::before,
+        body.projects-bg-active .recommendation-carousel-container::before { left: 0; background: linear-gradient(to right, rgba(34, 34, 34, 0.9) 20%, transparent 100%); }
+        body.projects-bg-active .logo-carousel::after,
+        body.projects-bg-active .recommendation-carousel-container::after { right: 0; background: linear-gradient(to left, rgba(34, 34, 34, 0.9) 20%, transparent 100%); }
+
+        body:not(.projects-bg-active) .logo-carousel::before,
+        body:not(.projects-bg-active) .recommendation-carousel-container::before { left: 0; background: linear-gradient(to right, var(--dark-background) 20%, transparent 100%); }
+        body:not(.projects-bg-active) .logo-carousel::after,
+        body:not(.projects-bg-active) .recommendation-carousel-container::after { right: 0; background: linear-gradient(to left, var(--dark-background) 20%, transparent 100%); }
+
+        .logo-track, .recommendation-track { display: flex; user-select: none; }
+        
+        .logo-slide {
+            height: 90px;
+            width: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 15px;
+            padding: 1rem;
+            flex-shrink: 0;
+            background: var(--card-background);
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.4s ease;
+            box-shadow: 0 0 12px rgba(0, 191, 255, 0.2);
+        }
+        .logo-slide span {
+            color: var(--light-text);
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            transition: color 0.3s ease;
+            pointer-events: none;
+        }
+        .logo-slide img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(0.8);
+            transition: filter 0.3s ease-in-out;
+        }
+        .logo-slide:hover img {
+             filter: grayscale(0%) brightness(1);
+        }
+
+        @media (min-width: 768px) {
+            .logo-slide { height: 100px; width: 210px; }
+            .logo-slide span { font-size: 1.5rem; }
+        }
+
+        .logo-slide:hover {
+            background-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+        }
+        .logo-slide:hover span { color: var(--dark-background); }
+
+        .recommendation-slide {
+            background-color: var(--card-background);
+            border-radius: 1.25rem;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+            width: 350px;
+            margin: 0 20px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .recommendation-slide:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 191, 255, 0.3);
+        }
+
+        .recommendation-slide img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .recommendation-slide .name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--light-text);
+            margin-bottom: 0.25rem;
+        }
+
+        .recommendation-slide .title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            min-height: 2.7rem; /* To prevent layout jumps */
+        }
+
+        .recommendation-slide .text {
+            font-size: 1rem;
+            color: var(--medium-gray);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .recommendation-slide .text::before {
+            content: '“';
+            font-size: 2.5rem;
+            font-family: 'Cinzel', serif;
+            color: var(--primary-color);
+            position: relative;
+            top: 10px;
+            left: -5px;
+        }
+
+        .recommendation-slide .text::after {
+            content: '”';
+            font-size: 2.5rem;
+            font-family: 'Cinzel', serif;
+            color: var(--primary-color);
+            position: relative;
+            top: 10px;
+            right: -5px;
+        }
+
+
+        .footer-bg {
+            background-color: rgba(34, 34, 34, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--medium-gray);
+            padding-top: 2.5rem;
+            padding-bottom: 2.5rem;
+            margin-top: 4rem;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        a {
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+        a:hover { color: #ffffff; }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .modal-overlay.show { visibility: visible; opacity: 1; }
+        .modal-content {
+            background-color: var(--card-background);
+            color: var(--light-text);
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--medium-gray);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .modal-close-button:hover { color: var(--primary-color); }
+        .modal-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        .modal-description {
+            font-size: 1.1rem;
+            color: var(--light-text);
+            margin-bottom: 1.5rem;
+        }
+        .modal-link {
+            display: inline-block;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+        .modal-link:hover { border-bottom-color: var(--primary-color); }
+
+        .hidden { display: none; }
+        
+        /* Animated Text Styles */
+        #animated-word-container {
+            min-height: 80px; /* Prevent layout shift with larger font */
+            font-size: 60px;
+            line-height: 1.2;
+        }
+
+        #animated-word {
+            color: var(--primary-color);
+            transition: color 0.5s ease;
+        }
+
+        #animated-word::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            margin-left: 0.25rem;
+            color: var(--primary-color);
+            transition: color 0.5s ease;
+        }
+
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* New Highlight Phrase Style */
+        .highlight-phrase {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1em;
+            transition: color 0.5s ease;
+        }
+
+    </style>
+</head>
+<body class="antialiased loading projects-bg-active" data-theme="zima">
+    
+    <div id="preloader">
+        <div class="preloader-content">
+            <svg class="preloader-shield" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path class="shield-path" d="M 50,5 L 95,25 L 95,65 C 95,85 50,95 50,95 C 50,95 5,85 5,65 L 5,25 Z" fill="none" stroke-width="5"/>
+                <text x="50" y="60" font-family="Inter, sans-serif" font-size="30" font-weight="800" text-anchor="middle" class="shield-text" fill="none">JN</text>
+            </svg>
+            <div class="welcome-message">
+                Bem Vindo
+            </div>
+        </div>
+    </div>
+
+    <svg width="0" height="0" style="position:absolute;z-index:-1;">
+      <defs>
+        <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:var(--gradient-start);stop-opacity:1" />
+          <stop offset="50%" style="stop-color:var(--primary-color);stop-opacity:1" /> 
+          <stop offset="100%" style="stop-color:var(--gradient-end);stop-opacity:1" />
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="content-overlay">
+        <header class="header-bg text-center">
+            <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <h1 class="header-title">
+                            <svg width="50" height="50" viewBox="0 0 50 50" class="logo-header" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="50" height="50" rx="8" ry="8" style="fill:var(--primary-color); transition: fill 0.5s ease;"/>
+                                <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" font-family="Inter, sans-serif" font-size="24" font-weight="800" style="fill:var(--dark-background); transition: fill 0.5s ease;">
+                                    JN
+                                </text>
+                            </svg>
+                        </h1>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <a href="#projetos" class="nav-link active">Projetos</a>
+                                <a href="#resumo" class="nav-link">Currículo</a>
+                                <a href="#contato" class="nav-link">Contato</a>
+                            </div>
+                        </div>
+
+                        <div class="ml-4 flex flex-col items-center">
+                            <button id="theme-switcher" title="Mudar tema" class="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-background" style="color: var(--primary-color); border-color: var(--primary-color);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                                    <path d="M9 18h6"></path><path d="M12 14.5v3.5"></path><path d="M12 2a7 7 0 0 0-7 7c0 3.03 2.47 5.5 5.5 5.5h3c3.03 0 5.5-2.47 5.5-5.5a7 7 0 0 0-7-7z"></path>
+                                </svg>
+                            </button>
+                            <span class="text-xs mt-1" style="color: var(--medium-gray);">Aura</span>
+                        </div>
+
+                        <div class="md:hidden ml-2">
+                            <button id="mobile-menu-button" class="focus:outline-none p-2" style="color: var(--light-text);">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div id="mobile-menu" class="md:hidden hidden shadow-lg" style="background-color: var(--card-background);">
+                <a href="#projetos" class="block nav-link text-base p-4">Projetos</a>
+                <a href="#resumo" class="block nav-link text-base p-4">Currículo</a>
+                <a href="#contato" class="block nav-link text-base p-4">Contato</a>
+            </div>
+        </header>
+
+        <div id="main-content" class="hidden max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+            <section id="competencias" class="py-12 md:py-16 rounded-xl my-12 p-6 md:p-10 section-box">
+                <h2 class="section-title">Competências</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+                    <article class="card p-6">
+                        <h3 class="text-xl md:text-2xl font-semibold mb-3 flex items-center" style="color: var(--primary-color);">
+                            <svg class="w-8 h-8 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4.5V19.5M4.5 12H19.5M19.5 12L16.5 9M19.5 12L16.5 15M4.5 12L7.5 9M4.5 12L7.5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Análise de Dados
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="skill-badge" data-skill="Raciocínio lógico">Raciocínio lógico</span>
+                            <span class="skill-badge" data-skill="Databases">Databases</span>
+                            <span class="skill-badge" data-skill="Análise estatística">Análise estatística</span>
+                            <span class="skill-badge" data-skill="Excel">Excel</span>
+                            <span class="skill-badge" data-skill="SQL">SQL</span>
+                            <span class="skill-badge" data-skill="Power BI">Power BI</span>
+                        </div>
+                    </article>
+                    <article class="card p-6">
+                        <h3 class="text-xl md:text-2xl font-semibold mb-3 flex items-center" style="color: var(--primary-color);">
+                            <svg class="w-8 h-8 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Otimização de Processos
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="skill-badge" data-skill="Gestão de projetos">Gestão de projetos</span>
+                            <span class="skill-badge" data-skill="PDCA">PDCA</span>
+                            <span class="skill-badge" data-skill="SIPOC">SIPOC</span>
+                            <span class="skill-badge" data-skill="DMAIC">DMAIC</span>
+                            <span class="skill-badge" data-skill="KPIs">KPIs</span>
+                            <span class="skill-badge" data-skill="OKRs">OKRs</span>
+                            <span class="skill-badge" data-skill="Melhoria contínua">Melhoria contínua</span>
+                            <span class="skill-badge" data-skill="Black Belt">Black Belt</span>
+                            <span class="skill-badge" data-skill="Kaizen">Kaizen</span>
+                        </div>
+                    </article>
+                    <article class="card p-6">
+                        <h3 class="text-xl md:text-2xl font-semibold mb-3 flex items-center" style="color: var(--primary-color);">
+                            <svg class="w-8 h-8 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16L16 12L12 8L8 12L12 16Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Prevenção à Fraudes
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="skill-badge" data-skill="Análise de fraudes">Análise de fraudes</span>
+                            <span class="skill-badge" data-skill="Mitigação de riscos">Mitigação de riscos</span>
+                            <span class="skill-badge" data-skill="Investigação">Investigação</span>
+                            <span class="skill-badge" data-skill="Parametrização de regras">Parametrização de regras</span>
+                        </div>
+                    </article>
+                    <article class="card p-6">
+                        <h3 class="text-xl md:text-2xl font-semibold mb-3 flex items-center" style="color: var(--primary-color);">
+                            <svg class="w-8 h-8 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M16 7a4 4 0 11-8 0 4 4 0 018 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 21v-2a4 4 0 00-3-3.87M18 7a4 4 0 11-1 3.87" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Gestão de Equipes
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="skill-badge" data-skill="Customer Success">Customer Success</span>
+                            <span class="skill-badge" data-skill="Liderança de equipes">Liderança de equipes</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section id="experiencia" class="py-12 md:py-16 rounded-xl my-12 p-6 md:p-10 section-box">
+                <h2 class="section-title">Experiência Profissional</h2>
+                <div class="grid md:grid-cols-1 gap-8">
+                    
+                    <div id="experience-renner" class="experience-item card p-6">
+                        <div class="experience-header flex justify-between items-start">
+                            <div>
+                                <h3>Analista de Prevenção SR Omnichannel III</h3>
+                                <p>Lojas Renner S.A.</p>
+                                <p>março de 2025 - Atualmente | São Paulo, Brasil</p>
+                            </div>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="experience-details hidden mt-4">
+                            <div class="text-summary">
+                                <p>Como Analista Sênior de Prevenção na Renner, sou responsável pela otimização de indicadores de performance, focando na aprovação de transações e na redução de chargebacks (CBK) para as marcas Camicado, Youcom e Repassa. Minha função é equilibrar a maximização da aprovação com a minimização de riscos, adaptando as estratégias de prevenção às necessidades distintas de cada empresa.</p>
+                                <p>Para isso, realizo análises de dados aprofundadas, considerando fatores como volume de solicitações, sazonalidade e particularidades de cada região e produto. Utilizo um conjunto robusto de ferramentas antifraude, incluindo ClearSale, Cybersource, Cielo e Iugo, para manter a qualidade e a segurança dos processos.</p>
+                                <p>A colaboração interdepartamental é crucial: conduzo reuniões periódicas com os times de tecnologia, financeiro e comunicação de cada BU para alinhar estratégias e metas. Minha atuação cobre todo o ciclo de vida do pedido, desde a compra no e-commerce (cartão, Pix, boleto, vale-troca) até a aprovação. Meu objetivo é garantir uma experiência ágil e segura para o cliente, otimizando continuamente nossos motores antifraude para uma alta performance.</p>
+                            </div>
+                            <div class="impact-markers">
+                                <div class="impact-marker">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v2.25A2.25 2.25 0 006 10.5zm0 9.75h2.25A2.25 2.25 0 0010.5 18v-2.25a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25V18A2.25 2.25 0 006 20.25zm9.75-9.75H18a2.25 2.25 0 002.25-2.25V6A2.25 2.25 0 0018 3.75h-2.25A2.25 2.25 0 0013.5 6v2.25a2.25 2.25 0 002.25 2.25z" stroke="url(#neonGradient)" />
+                                    </svg>
+                                    <span>Input Estratégia Omnichannel</span>
+                                </div>
+                                <div class="impact-marker">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" stroke="url(#neonGradient)" />
+                                    </svg>
+                                    <span>Análise Fraudes Iniciais</span>
+                                </div>
+                                 <div class="impact-marker">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                         <path d="M3.75 3v11.25A2.25 2.25 0 006 16.5h12A2.25 2.25 0 0020.25 14.25V3m-16.5 0h16.5m-16.5 0H3.75m16.5 0v11.25c0 .621-.504 1.125-1.125 1.125H9.75M3.75 3H9.75m6.75 0H20.25M3.75 3c0-1.036.84-1.875 1.875-1.875h12.75c1.035 0 1.875.84 1.875 1.875m-16.5 0v11.25c0 .621.504 1.125 1.125 1.125H9.75" stroke="url(#neonGradient)" />
+                                    </svg>
+                                    <span>Revisão Políticas Segurança</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="experience-jeitto" class="experience-item card p-6">
+                        <div class="experience-header flex justify-between items-start">
+                            <div>
+                                <h3>Especialista - Team leader de Prevenção</h3>
+                                <p>Jeitto</p>
+                                <p>fevereiro de 2023 - fevereiro de 2025 (2 anos) | São Paulo, Brasil</p>
+                            </div>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="experience-details hidden mt-4">
+                            <div class="text-summary">
+                                <p>Como Especialista e Team Leader de Prevenção, liderei a estratégia e gestão de prevenção, possuindo sólida experiência na parametrização de regras de negócio, no controle de processos para atendimento de demandas judiciais, atendimento a canais regulatórios como Reclame Aqui, Banco Central (Bacen) e Procon.</p> 
+                                <p>Na gestão de equipes, destaquei pelo desenvolvimento da produtividade e pela aplicação de feedbacks estruturados, além da realização de reuniões individuais (1:1) focadas na evolução profissional dos colaboradores. Demonstrei entusiasmo pela melhoria contínua, implementando fluxos de qualidade que otimizaram o desempenho.</p> 
+                                <p>A abordagem em indicadores e estratégia baseou-se no uso de frameworks robustos como PDCA, SIPOC e DMAIC para o monitoramento preciso de OKRs e KPIs. Tive experiência na implementação de motores de regras para assegurar a integridade das transações e no desenvolvimento de estratégias avançadas para mitigação de riscos e prevenção de fraudes.</p> 
+                                <p>No desenvolvimento de processos e produtos, atuei como P.O dentro de prevenção, liderando a criação de soluções que responderam diretamente à Voz do Cliente (VOC). Fui responsável pela otimização de fluxos e pela reestruturação de áreas para novas demandas, visando maior eficiência e alinhamento estratégico.</p> 
+                                <p>Entre as principais realizações, destaco a gestão de produtos de prevenção renomados como Serasa, PH3A, Clearsale e Provenir. Tive a oportunidade de trabalhar com na manutenção de regras com o Blue Team e o Red Team, na criação de fluxos de segurança específicos para modelos BNPL (Buy Now, Pay Later) e na construção e manutenção de novos produtos de crédito.</p>
+                            </div>
+                            <ul class="highlight-list space-y-3 mt-4">
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                                    <span>Liderança e desenvolvimento de equipes de prevenção com foco em performance e evolução profissional.</span>
+                                </li>
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path></svg>
+                                    <span>Definição e implementação de estratégias de mitigação de riscos e motores de regras de negócio.</span>
+                                </li>
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                                    <span>Otimização de processos e melhoria contínua através de PDCA, SIPOC, DMAIC e gestão de KPIs/OKRs.</span>
+                                </li>
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2V7h-2v3H9V7H7v3H5V5z" clip-rule="evenodd"></path></svg>
+                                    <span>Gestão de portfólio de produtos de prevenção e atuação como Product Owner para soluções VOC.</span>
+                                </li>
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+                                    <span>Desenvolvimento de fluxos de segurança para BNPL e novos produtos de crédito.</span>
+                                </li>
+                            </ul>
+                            <div class="impact-markers">
+                                <div class="impact-marker">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" stroke="url(#neonGradient)" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>SLA &lt; 24h</span>
+                                </div>
+                                <div class="impact-marker">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.623a11.99 11.99 0 00-.598-3.75h-.152c-3.196 0-6.1-1.248-8.25-3.285z" stroke="url(#neonGradient)" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>Defesa: + R$ 10MM</span>
+                                </div>
+                                <div class="impact-marker">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181" stroke="url(#neonGradient)" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>Redução 90% Ataques</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="experience-item card p-6">
+                        <div class="experience-header flex justify-between items-start">
+                            <div>
+                                <h3>Analista de Riscos</h3>
+                                <p>Fintech Magalu</p>
+                                <p>junho de 2022 - fevereiro de 2023 (9 meses) | São Paulo, São Paulo, Brasil</p>
+                            </div>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="experience-details hidden mt-4">
+                            <div class="text-summary">
+                                <p>Com foco em mitigação de perdas e suporte à gestão, atuei no setor de riscos para garantir a conformidade regulatória e a segurança operacional. Desenvolvi dashboards detalhados para monitorar a performance e identificar oportunidades de melhoria em processos internos. Minhas principais atividades incluíram oferecer suporte na resolução de problemas relacionados à liberação de valores, implementar soluções ágeis para otimização de processos, e realizar o monitoramento e a prevenção de fraudes como Account Takeover. Além disso, fui responsável pela análise de perfis e prevenção de fraudes em pedidos B2B e B2C, colaborando ativamente com outras áreas, como vendas, para promover maior eficiência operacional. Entre as principais realizações, destacou-se a implementação bem-sucedida do monitoramento de produtividade, a criação do checklist "Mapa do Maroto", que foi oficialmente adotado pelo Magalu e Netshoes, e a otimização do canal de atendimento omnichannel, aprimorando a experiência do cliente.</p>
+                            </div>
+                             <ul class="highlight-list space-y-3 mt-4">
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"></path></svg>
+                                    <span>Desenvolvimento de dashboards e análise de dados para monitoramento de performance e otimização de processos.</span>
+                                </li>
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"></path></svg>
+                                    <span>Implementação de soluções ágeis para otimização de processos e monitoramento de produtividade.</span>
+                                </li>
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.022 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
+                                    <span>Prevenção ativa de Account Takeover e análise de fraudes em transações B2B e B2C.</span>
+                                </li>
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1z"></path></svg>
+                                    <span>Criação do checklist "Mapa do Maroto" para padronização e eficiência nas análises de risco.</span>
+                                </li>
+                            </ul>
+                            <div class="impact-markers">
+                                <div class="impact-marker">
+                                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" stroke="url(#neonGradient)" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>Dashboards Performance Impacto</span>
+                                </div>
+                                <div class="impact-marker">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" stroke="url(#neonGradient)" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>Prevenção ATO Contas</span>
+                                </div>
+                                 <div class="impact-marker">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125z" stroke="url(#neonGradient)" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>Otimização Atendimento Omni</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="experience-tim" class="experience-item card p-6">
+                         <div class="experience-header flex justify-between items-start">
+                            <div>
+                                <h3>Analista de Riscos Sênior</h3>
+                                <p>TIM Brasil</p>
+                                <p>novembro de 2014 - janeiro de 2022 (7 anos 3 meses) | Santo André, São Paulo, Brazil</p>
+                            </div>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="experience-details hidden mt-4">
+                            <div class="text-summary">
+                               <p>Como Analista de Riscos Sênior, fui responsável por conduzir treinamentos, oferecer suporte a novas demandas e efetuar a liberação de pedidos por meio de uma análise aprofundada da prospecção de clientes.</p>
+                               <p>Além disso, gerenciei o atendimento a demandas de BackOffice, Reclame Aqui e Anatel, e realizei a contestação de valores com base em análises estruturadas.</p>
+                               <p>Entre as principais atividades, destaquei a condução de treinamentos de suporte para novas demandas, a liberação de pedidos com análise criteriosa na prospecção de novos clientes, e o suporte contínuo a demandas como as de BackOffice, Reclame Aqui e Anatel, bem como a contestação de valores com base em análises estruturadas.</p>
+                               <p>As principais realizações incluíram a criação de um fluxo eficiente de análise de prospecção para pessoas físicas realizada em loja, o monitoramento constante das análises executadas pelos times de detecção do setor, e a liberação estratégica de pedidos de alto valor para empresas como GOV, LA e PEP.</p>
+                            </div>
+                             <ul class="highlight-list space-y-3 mt-4">
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                                    <span>Gestão de demandas regulatórias (BackOffice, Reclame Aqui, Anatel) com análises estruturadas.</span>
+                                </li>
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
+                                    <span>Desenvolvimento e monitoramento de fluxos de análise de prospecção de clientes.</span>
+                                </li>
+                                <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm12 6a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4a2 2 0 012-2h8zm-3 4a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                                    <span>Liberação de pedidos de alto valor para clientes estratégicos (GOV, LA, PEP) após análise de risco.</span>
+                                </li>
+                                 <li>
+                                    <svg class="icon-bullet" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10 3.5a1.5 1.5 0 011.102.48l4.407 4.043a1.5 1.5 0 010 2.053l-4.407 4.043A1.5 1.5 0 0110 13.5v-2.121A4.502 4.502 0 004.5 15.553V15.5a1.5 1.5 0 011.002-1.41l.006-.002A6.002 6.002 0 0110 9.379V7.5a1.5 1.5 0 01.398-1.02l4.407-4.043A1.5 1.5 0 0010 3.5zm3.53 5.03a.5.5 0 000-.707L10.435 4.73a.5.5 0 00-.87 0l-3.095 2.84a.5.5 0 000 .707l3.095 2.84a.5.5 0 00.87 0l3.095-2.84z"></path></svg>
+                                    <span>Treinamento e suporte a novas demandas da equipe de análise de riscos.</span>
+                                </li>
+                            </ul>
+                            <div class="impact-markers">
+                                <div class="impact-marker">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h6M9 11.25h6M9 15.75h6" stroke="url(#neonGradient)" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>Gestão Demandas Regulatórias</span>
+                                </div>
+                                <div class="impact-marker">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M3 13.125C3 12.504 3.504 12 4.125 12h3.75c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-3.75A1.125 1.125 0 013 16.875v-3.75zM3 8.625c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-3.75A1.125 1.125 0 013 12.375v-3.75zM13.5 3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-3.75A1.125 1.125 0 0113.5 7.125v-3.75zM13.5 15.75c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-3.75a1.125 1.125 0 01-1.125-1.125v-3.75z" stroke="url(#neonGradient)" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>Fluxos Análise Prospecção</span>
+                                </div>
+                                 <div class="impact-marker">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M9 12.75L11.25 15 15 9.75M20.25 12c0 4.418-3.694 8.25-8.25 8.25S3.75 16.418 3.75 12 7.444 3.75 12 3.75s8.25 3.694 8.25 8.25z" stroke="url(#neonGradient)" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>Liberação Pedidos Alto Risco</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="ferramentas" class="py-12 md:py-16">
+                <h2 class="section-title">Ferramentas e Tecnologias</h2>
+                <div class="logo-carousel" id="tools-logo-carousel">
+                    <div class="logo-track" id="tools-logo-track">
+                        <div class="logo-slide" data-tool="Axur"><span>Axur</span></div>
+                        <div class="logo-slide" data-tool="Serasa"><span>Serasa</span></div>
+                        <div class="logo-slide" data-tool="Provenir"><span>Provenir</span></div>
+                        <div class="logo-slide" data-tool="Tempest"><span>Tempest</span></div>
+                        <div class="logo-slide" data-tool="PH3A"><span>PH3A</span></div>
+                        <div class="logo-slide" data-tool="Celcoin"><span>Celcoin</span></div>
+                        <div class="logo-slide" data-tool="Quod"><span>Quod</span></div>
+                        <div class="logo-slide" data-tool="ClearSale"><span>ClearSale</span></div>
+                        <div class="logo-slide" data-tool="Cybersource"><span>Cybersource</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="formacao" class="py-12 md:py-16">
+                <h2 class="section-title">Formação Acadêmica</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="card p-10 flex flex-col items-center text-center">
+                        <div class="mb-4">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="var(--primary-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 10L12 13L17 10" stroke="var(--primary-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2V13" stroke="var(--primary-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 7L12 12L22 7" stroke="var(--primary-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-2" style="color: var(--light-text);">FM2S Educação e Consultoria</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-300 text-left w-full">
+                            <li>Pós-graduação Lato Sensu - MBA Liderança e Gestão</li>
+                            <li>Pós-graduação Lato Sensu - MBA Gestão de Projetos</li>
+                        </ul>
+                    </div>
+                    <div class="card p-10 flex flex-col items-center text-center">
+                        <div class="mb-4">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 19.5V14.5C4 13.9477 4.44772 13.5 5 13.5H19C19.5523 13.5 20 13.9477 20 14.5V19.5C20 20.0523 19.5523 20.5 19 20.5H5C4.44772 20.5 4 20.0523 4 19.5Z" stroke="var(--primary-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14.5V9.5C4 8.94772 4.44772 8.5 5 8.5H19C19.5523 8.5 20 8.94772 20 9.5V14.5" stroke="var(--primary-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 9.5V4.5C4 3.94772 4.44772 3.5 5 3.5H19C19.5523 3.5 20 3.94772 20 4.5V9.5" stroke="var(--primary-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3.5V20.5" stroke="var(--primary-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-2" style="color: var(--light-text);">Anhanguera Educacional</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-300 text-left w-full">
+                            <li>Ensino Superior, Gestão da Qualidade</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <div id="projects-page" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+            <section id="projetos" class="py-12 md:py-16">
+
+                <section id="resumo-main" class="py-12 md:py-20 lg:py-24 flex flex-col justify-center items-center">
+                    <div class="w-full">
+                        <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
+                            <div class="flex-shrink-0">
+                                <img id="profile-picture" src="https://media.licdn.com/dms/image/v2/D4D03AQHgi_T6-aLTww/profile-displayphoto-shrink_800_800/B4DZdLoXgAHkAc-/0/1749320563036?e=1754524800&v=beta&t=5ZALoM6I875D6h2hlNdTVsEP-LrpEu88EQ_51sCTC0U" onerror="this.onerror=null;this.src='https://placehold.co/250x250/333333/f0f0f0?text=JN';" alt="Foto de Perfil de Jonatha Neri Cardoso" class="rounded-full w-48 h-48 md:w-64 md:h-64 object-cover border-4">
+                            </div>
+                            <div class="text-center md:text-left">
+                                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4">
+                                    <span style="color: var(--light-text);">Jonatha Neri Cardoso</span>
+                                </h1>
+                                 <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6" style="color: var(--primary-color);">
+                                    Especialista em Prevenção à Fraudes
+                                </h2>
+                                <p class="text-lg sm:text-xl lg:text-2xl max-w-2xl mx-auto md:mx-0 mb-10" style="color: var(--medium-gray); line-height: 1.8;">
+                                    Com mais de 12 anos de atuação, profissional com expertise em gestão de riscos e fraudes, utilizando ferramentas e metodologias avançadas para assegurar a integridade e otimizar processos em diversas frentes.
+                                </p>
+                                <button id="showProfileSummaryBtn" 
+                                        class="font-semibold px-8 py-3 sm:px-10 sm:py-4 rounded-lg transition-colors text-lg shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2" 
+                                        style="background-color: var(--primary-color); color: var(--dark-background); border-color: var(--primary-color); ring-color: var(--primary-color);">
+                                    Ver Resumo do Perfil
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="kyc-project" class="my-16">
+                    <div class="card p-6 md:p-8">
+                        <div class="flex items-center gap-4 mb-6 pb-4 border-b" style="border-color: var(--border-color);">
+                            <img src="https://cdn.prod.website-files.com/67bdccef0fb8eda6dcffb16e/67bf25d5e685dfb26716dde0_logo-jeitto.svg" alt="Logo Jeitto" class="h-12 p-1 rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/100x50/ffffff/333333?text=Jeitto';">
+                            <h3 class="text-3xl font-bold" style="color: var(--primary-color);">Redução de Custos no KYC</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="text-2xl font-semibold mb-3" style="color: var(--light-text);">Necessidade</h4>
+                                <p class="mb-4" style="color: var(--medium-gray);">O processo de onboarding da Jeitto, embora bem estruturado, gerava um Custo de Aquisição de Clientes (CAC) significativamente alto. Nosso desafio era recriar esse fluxo, focando em reduzir custos, aumentar a segurança e otimizar o tempo de captação de novos clientes, tudo isso utilizando as tecnologias já existentes. O objetivo era claro: minimizar atrito e despesas no processo de aquisição.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-semibold mb-3" style="color: var(--light-text);">Desenvolvimento</h4>
+                                <p class="mb-4" style="color: var(--medium-gray);">Iniciamos o desenvolvimento com uma imersão profunda nas tecnologias existentes e nos objetivos de criação de conta. Nosso foco era identificar como poderíamos alavancar as ferramentas atuais para reduzir o custo do cadastro. Realizamos uma pesquisa abrangente com as equipes de Customer Success (CS), Segurança da Informação (SI), Jurídico e Produto para obter uma visão holística do processo, tanto da perspectiva do cliente quanto da empresa.</p>
+                                <p class="mb-4" style="color: var(--medium-gray);">Após extensos levantamentos, estudos e a criação e recriação de diversos fluxos, selecionamos a abordagem que oferecia o melhor tempo de atuação, cumpria todas as normas de segurança, estava alinhada aos padrões do Google e, crucialmente, apresentava o menor custo. Uma inovação chave foi a priorização da base de dados interna antes de acionar as APIs de fornecedores externos, o que contribuiu significativamente para a redução de custos.</p>
+                
+                                <h4 class="text-2xl font-semibold mb-3 mt-6" style="color: var(--light-text);">Resultado Final</h4>
+                                <p style="color: var(--medium-gray);">Implementamos um processo que não apenas diminuiu os custos das chamadas externas, mas também otimizou a captação de novos clientes. Os filtros rigorosos criados no fluxo tornaram-no mais limpo e rápido, resultando em uma notável redução no custo de criação de novas contas. Todo o processo foi meticulosamente desenhado para garantir que o propósito de não criar atrito para o cliente fosse mantido, transformando o desafio em um sucesso singular.</p>
+                            </div>
+                        </div>
+
+                        <!-- Fluxograma do Projeto -->
+                        <div class="mt-8 pt-6 border-t" style="border-color: var(--border-color);">
+                            <h4 class="text-xl font-semibold mb-8 text-center" style="color: var(--light-text);">Fluxo do Processo</h4>
+                            <div class="flex flex-wrap md:flex-nowrap items-start justify-center md:justify-between gap-y-6 text-sm">
+
+                                <!-- Step 1 -->
+                                <div class="flex flex-col items-center w-1/3 md:w-1/5 text-center px-2">
+                                    <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                        </svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Necessidade</h5>
+                                    <p style="color: var(--medium-gray);">Alto CAC e atrito no onboarding.</p>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                    <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+
+                                <!-- Step 2 -->
+                                <div class="flex flex-col items-center w-1/3 md:w-1/5 text-center px-2">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                        </svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Desenvolvimento</h5>
+                                    <p style="color: var(--medium-gray);">Imersão e pesquisa interna.</p>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                     <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+                                
+                                <!-- Step 3 -->
+                                <div class="flex flex-col items-center w-1/3 md:w-1/5 text-center px-2">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10m16-10v10M4 13h16M4 7h16m-6-3v16" />
+                                        </svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Inovação Chave</h5>
+                                     <p style="color: var(--medium-gray);">Priorização de dados internos.</p>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                     <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+
+                                <!-- Step 4 -->
+                                <div class="flex flex-col items-center w-1/2 md:w-1/5 text-center px-2 mt-6 md:mt-0">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                        </svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Implementação</h5>
+                                     <p style="color: var(--medium-gray);">Lançamento do novo fluxo otimizado.</p>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                     <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+
+                                <!-- Step 5 -->
+                                <div class="flex flex-col items-center w-1/2 md:w-1/5 text-center px-2 mt-6 md:mt-0">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.085a2 2 0 00-1.736.97l-2.714 5.428a2 2 0 001.736 2.97h4.618a2 2 0 002-2z" />
+                                        </svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Resultado</h5>
+                                     <p style="color: var(--medium-gray);">Redução de custos e otimização.</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="my-16 text-left px-4">
+                    <p class="text-xl md:text-2xl lg:text-3xl max-w-4xl leading-relaxed" style="color: var(--medium-gray);">
+                        Conecto a <strong class="highlight-phrase">análise de risco</strong> a uma estratégia de prevenção que prioriza a <strong class="highlight-phrase">experiência do cliente</strong>. Especialista em mapear a <strong class="highlight-phrase">jornada do consumidor</strong>, construir <strong class="highlight-phrase">defesas eficazes e de baixo atrito</strong>, que <strong class="highlight-phrase">protegem sua receita</strong> ao mesmo tempo que garantem uma <strong class="highlight-phrase">experiência de compra ágil, simples e segura</strong>.
+                    </p>
+                </section>
+                
+                <section id="prospect-consumer-project" class="my-16">
+                    <div class="card p-6 md:p-8">
+                        <div class="flex items-center gap-4 mb-6 pb-4 border-b" style="border-color: var(--border-color);">
+                            <img src="https://logodownload.org/wp-content/uploads/2015/02/tim-logo-10-1.png" alt="Logo TIM" class="h-12 p-1 rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/100x50/ffffff/333333?text=TIM';">
+                            <h3 class="text-3xl font-bold" style="color: var(--primary-color);">Prospect Consumer</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="text-2xl font-semibold mb-3" style="color: var(--light-text);">Necessidade</h4>
+                                <p class="mb-4" style="color: var(--medium-gray);">A TIM buscava uma solução inovadora para otimizar o processo de ativação de novas linhas, com o objetivo de impulsionar as vendas e o crescimento da base de clientes. A principal necessidade era agilizar e simplificar a ativação de linhas diretamente em campo.</p>
+                                <p class="mb-4" style="color: var(--medium-gray);">A empresa precisava de um ecossistema eficaz que permitisse aos vendedores:</p>
+                                <ul class="list-disc list-inside space-y-2" style="color: var(--medium-gray);">
+                                    <li>Coletar documentação de forma eficiente.</li>
+                                    <li>Realizar o registro biométrico no local.</li>
+                                    <li>Ativar novas linhas.</li>
+                                </ul>
+                                <p class="mt-4" style="color: var(--medium-gray);">Ao se tornar pioneira nesse modelo de ativação, a TIM visava otimizar a experiência do cliente. Além disso, o projeto tinha como meta aumentar a produtividade da equipe de vendas, liberando-a para focar na captação de mais clientes.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-semibold mb-3" style="color: var(--light-text);">Desenvolvimento</h4>
+                                <p class="mb-4" style="color: var(--medium-gray);">Após a identificação da necessidade pela diretoria e pelos vendedores, o projeto focou na criação de um ecossistema robusto para prevenir fraudes, especialmente as de comissionamento e de não titularidade (clientes que desconheciam a ativação).</p>
+                                <p class="mb-4" style="color: var(--medium-gray);">O processo de desenvolvimento seguiu os seguintes passos:</p>
+                                 <ul class="list-disc list-inside space-y-2 mb-4" style="color: var(--medium-gray);">
+                                    <li>Criação do processo de coleta de dados: As informações foram armazenadas para futuras análises.</li>
+                                    <li>Captura de documentos: Definição e implementação do processo de captura e coleta dos dados.</li>
+                                    <li>Criação e validação dos contratos:
+                                        <ul class="list-decimal list-inside ml-4 mt-2 space-y-1">
+                                            <li>Avaliação da qualidade das imagens e conformidade dos documentos com as normas.</li>
+                                            <li>Contato ativo com o cliente para validar os dados. Se as validações ocorressem de forma consistente, a venda era liberada.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                
+                                <h4 class="text-2xl font-semibold mb-3 mt-6" style="color: var(--light-text);">Resultado Final</h4>
+                                <p style="color: var(--medium-gray);">O projeto foi concluído com sucesso, resultando em um sistema e equipamento integrados. Isso possibilitou a ativação de novas linhas de forma rápida e segura no campo, com processos bem definidos para coleta de dados, biometria e validação de documentos, prevenindo fraudes e garantindo a conformidade.</p>
+                            </div>
+                        </div>
+
+                        <!-- Fluxograma do Projeto -->
+                        <div class="mt-8 pt-6 border-t" style="border-color: var(--border-color);">
+                            <h4 class="text-xl font-semibold mb-8 text-center" style="color: var(--light-text);">Fluxo do Processo</h4>
+                            <div class="flex flex-wrap md:flex-nowrap items-start justify-center md:justify-between gap-y-6 text-sm">
+
+                                <!-- Step 1 -->
+                                <div class="flex flex-col items-center w-1/3 md:w-1/5 text-center px-2">
+                                    <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                        </svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Necessidade</h5>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                    <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+
+                                <!-- Step 2 -->
+                                <div class="flex flex-col items-center w-1/3 md:w-1/5 text-center px-2">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                        </svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Coleta de Dados</h5>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                     <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+                                
+                                <!-- Step 3 -->
+                                <div class="flex flex-col items-center w-1/3 md:w-1/5 text-center px-2">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Captura</h5>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                     <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+
+                                <!-- Step 4 -->
+                                <div class="flex flex-col items-center w-1/2 md:w-1/5 text-center px-2 mt-6 md:mt-0">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                        </svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Validação</h5>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                     <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+
+                                <!-- Step 5 -->
+                                <div class="flex flex-col items-center w-1/2 md:w-1/5 text-center px-2 mt-6 md:mt-0">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                        </svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Resultado</h5>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="my-16">
+                    <div id="animated-word-container" class="text-center text-medium-gray font-semibold">
+                        Menos risco, mais <span id="animated-word" class="font-bold"></span>
+                    </div>
+                </section>
+
+                <section id="maroto-project" class="my-16">
+                    <div class="card p-6 md:p-8">
+                        <div class="flex items-center gap-4 mb-6 pb-4 border-b" style="border-color: var(--border-color);">
+                            <img src="https://logodownload.org/wp-content/uploads/2019/09/magalu-logo.png" alt="Logo Magalu" class="h-12 p-1 rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/100x50/ffffff/333333?text=Magalu';">
+                            <h3 class="text-3xl font-bold" style="color: var(--primary-color);">Mapa do Maroto</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="text-2xl font-semibold mb-3" style="color: var(--light-text);">Necessidade</h4>
+                                <p class="mb-4" style="color: var(--medium-gray);">O projeto "Mapa do Maroto" surgiu da necessidade de agilizar e padronizar o processo de análise manual da mesa de risco do Magazine Luiza. Cada consultor possuía sua própria metodologia para realizar as análises e preencher as informações, o que gerava uma série de impactos, principalmente a falta de padrão nas anotações de finalização. Essa inconsistência resultava em ineficiência e dificultava a rastreabilidade e a qualidade das análises.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-semibold mb-3" style="color: var(--light-text);">Desenvolvimento</h4>
+                                <p class="mb-4" style="color: var(--medium-gray);">Para agilizar e padronizar as finalizações dos analistas, foi desenvolvido um formulário simples em HTML e CSS. Esse formulário permitia que os analistas realizassem apenas marcações conforme validavam as informações dos clientes. Ao final, foi criado um campo para anotações, e assim, o pedido do cliente poderia ser liberado de forma mais ágil, com dados padronizados e características claras do pedido.</p>
+                                <p class="mb-4" style="color: var(--medium-gray);">Testes gradativos foram conduzidos na operação, envolvendo um número limitado de analistas para minimizar o impacto na performance, enquanto coletavam feedbacks valiosos sobre a ferramenta.</p>
+                
+                                <h4 class="text-2xl font-semibold mb-3 mt-6" style="color: var(--light-text);">Resultado Final</h4>
+                                <p style="color: var(--medium-gray);">A implementação do "Mapa do Maroto" foi muito bem aceita por todos os analistas da mesa operacional e seus gestores. O projeto ganhou proporções significativas, resultando em seu reconhecimento por diretores e sua posterior implementação em outras funções e empresas do Grupo Magalu.</p>
+                            </div>
+                        </div>
+
+                        <!-- Fluxograma do Projeto -->
+                        <div class="mt-8 pt-6 border-t" style="border-color: var(--border-color);">
+                            <h4 class="text-xl font-semibold mb-8 text-center" style="color: var(--light-text);">Fluxo do Processo</h4>
+                            <div class="flex flex-wrap md:flex-nowrap items-start justify-center md:justify-between gap-y-6 text-sm">
+
+                                <!-- Step 1 -->
+                                <div class="flex flex-col items-center w-1/3 md:w-1/5 text-center px-2">
+                                    <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Necessidade</h5>
+                                    <p style="color: var(--medium-gray);">Falta de padrão e ineficiência.</p>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                    <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+
+                                <!-- Step 2 -->
+                                <div class="flex flex-col items-center w-1/3 md:w-1/5 text-center px-2">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l-4 4-4-4-4 4" /></svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Desenvolvimento</h5>
+                                     <p style="color: var(--medium-gray);">Criação de formulário HTML/CSS.</p>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                     <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+                                
+                                <!-- Step 3 -->
+                                <div class="flex flex-col items-center w-1/3 md:w-1/5 text-center px-2">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Testes</h5>
+                                    <p style="color: var(--medium-gray);">Implementação gradual e coleta de feedback.</p>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                     <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+
+                                <!-- Step 4 -->
+                                <div class="flex flex-col items-center w-1/2 md:w-1/5 text-center px-2 mt-6 md:mt-0">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Implementação</h5>
+                                    <p style="color: var(--medium-gray);">Adoção completa pela equipe.</p>
+                                </div>
+
+                                <!-- Connector -->
+                                <div class="hidden md:flex flex-1 items-center" style="margin-top: 2rem;">
+                                     <div class="w-full h-0.5" style="background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); opacity: 0.6;"></div>
+                                </div>
+
+                                <!-- Step 5 -->
+                                <div class="flex flex-col items-center w-1/2 md:w-1/5 text-center px-2 mt-6 md:mt-0">
+                                     <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 mb-3" style="border-color: var(--primary-color); background-color: rgba(0, 191, 255, 0.1);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--primary-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.085a2 2 0 00-1.736.97l-2.714 5.428a2 2 0 001.736 2.97h4.618a2 2 0 002-2z" /></svg>
+                                    </div>
+                                    <h5 class="font-semibold" style="color: var(--light-text);">Resultado</h5>
+                                    <p style="color: var(--medium-gray);">Reconhecimento e expansão para o grupo.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                 <h2 class="section-title">Onde Passei</h2>
+                 
+                <div class="logo-carousel" id="company-logo-carousel">
+                    <div class="logo-track" id="company-logo-track">
+                        <div class="logo-slide">
+                            <img src="https://logodownload.org/wp-content/uploads/2014/07/renner-logo-1-1.png" alt="Logo Renner" onerror="this.onerror=null;this.src='https://placehold.co/210x100/333333/f0f0f0?text=Renner';">
+                        </div>
+                        <div class="logo-slide">
+                            <img src="https://cdn.prod.website-files.com/67bdccef0fb8eda6dcffb16e/67bf25d5e685dfb26716dde0_logo-jeitto.svg" alt="Logo Jeitto" onerror="this.onerror=null;this.src='https://placehold.co/210x100/333333/f0f0f0?text=Jeitto';">
+                        </div>
+                        <div class="logo-slide">
+                             <img src="https://logodownload.org/wp-content/uploads/2019/09/magalu-logo.png" alt="Logo Magalu" onerror="this.onerror=null;this.src='https://placehold.co/210x100/333333/f0f0f0?text=Magalu';">
+                        </div>
+                        <div class="logo-slide">
+                             <img src="https://logodownload.org/wp-content/uploads/2019/08/akzo-nobel-logo.png" alt="Logo Akzo" onerror="this.onerror=null;this.src='https://placehold.co/210x100/333333/f0f0f0?text=Magalu';">
+                        </div>
+                        <div class="logo-slide">
+                            <img src="https://logodownload.org/wp-content/uploads/2015/02/tim-logo-10-1.png" alt="Logo TIM" onerror="this.onerror=null;this.src='https://placehold.co/210x100/333333/f0f0f0?text=TIM';">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations Section -->
+                <section id="recomendacoes" class="py-12 md:py-16">
+                    <h2 class="section-title">Recomendações</h2>
+                    <div class="recommendation-carousel-container" id="recommendations-carousel">
+                        <div class="recommendation-track" id="recommendations-track">
+                            <!-- Recommendation 1 -->
+                            <div class="recommendation-slide">
+                                <img src="https://media.licdn.com/dms/image/v2/D4D03AQFILugevBeCMA/profile-displayphoto-shrink_800_800/B4DZYSu7BPGwAc-/0/1744071012885?e=1755129600&v=beta&t=ZYD6aLpmV8z9jA0crMy551qFwtdh9r3ck11oS8WFG1o" alt="Foto de Victor Del Vecchio" onerror="this.onerror=null;this.src='https://placehold.co/100x100/333333/f0f0f0?text=VV';">
+                                <h4 class="name">Victor Del Vecchio</h4>
+                                <p class="title">Especialista em Prevenção à Fraudes</p>
+                                <p class="text">Profissional competente, atualizado e experiente, disposto a transpor todos os obstáculos no combate à fraude, sendo capaz de agregar valor ao negócio em qualquer organização.</p>
+                            </div>
+                            <!-- Recommendation 2 -->
+                            <div class="recommendation-slide">
+                                <img src="https://media.licdn.com/dms/image/v2/D4D03AQFMcd_rWDXKHg/profile-displayphoto-shrink_800_800/B4DZOStKrsHQAc-/0/1733333134836?e=1755129600&v=beta&t=Seh56IAHP3NzC0VBslcGA7KBa0nEQtsoXR7P_AXg6FA" alt="Foto de Rodnei Fontana Lozano" onerror="this.onerror=null;this.src='https://placehold.co/100x100/333333/f0f0f0?text=RL';">
+                                <h4 class="name">Rodnei Fontana Lozano</h4>
+                                <p class="title">Head de Prevenção a Fraudes</p>
+                                <p class="text">Recomendo Jonatha como um excelente profissional na área de prevenção à fraude. Durante o tempo em que trabalhou sob minha Gestão, ele demonstrou um compromisso exemplar com a segurança e integridade dos processos da organização.</p>
+                            </div>
+                            <!-- Recommendation 3 -->
+                            <div class="recommendation-slide">
+                                <img src="https://media.licdn.com/dms/image/v2/D4D03AQG58D8FXgyAxw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1680929124965?e=1755129600&v=beta&t=3_1q5SPY2EwfvtEcnUfLCJU8WqEeX1FiPXx0xm6nMUE" alt="Foto de Paulo Carvente da Silva" onerror="this.onerror=null;this.src='https://placehold.co/100x100/333333/f0f0f0?text=PS';">
+                                <h4 class="name">Paulo Carvente da Silva</h4>
+                                <p class="title">Analista de Risco</p>
+                                <p class="text">Trabalhei com Jonatha no desenvolvimento de uma ferramenta de micro serviço web para aplicação em nossa área e foi muito satisfatório lidar com os desafios do projeto no dia-a-dia com alguém altamente capacitado a lidar com todo tipo de projeto.</p>
+                            </div>
+                            <!-- Recommendation 4 -->
+                            <div class="recommendation-slide">
+                                <img src="https://media.licdn.com/dms/image/v2/C4E03AQERuegZ5gvK2w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1641331815146?e=1755129600&v=beta&t=KLke-vJfebCc4C0KYiUnbIgEM-T-DHOtz09393WV4lM" alt="Foto de Adriana Mendonca Teixeira Martins" onerror="this.onerror=null;this.src='https://placehold.co/100x100/333333/f0f0f0?text=AM';">
+                                <h4 class="name">Adriana Mendonca Teixeira Martins</h4>
+                                <p class="title">Líder de Equipe</p>
+                                <p class="text">Fui líder do Jonatha por alguns anos na área de Anti fraude, fazia um ótimo trabalho em equipe, colaborava com sugestões nos processos e nós auxiliou muito no projeto da migração para o Home Office com melhorias de performance, eu indico seu trabalho.</p>
+                            </div>
+                            <!-- Recommendation 5 -->
+                            <div class="recommendation-slide">
+                                <img src="https://media.licdn.com/dms/image/v2/D4D03AQFYcRxmkfuksQ/profile-displayphoto-shrink_800_800/B4DZY7gQggG4Ag-/0/1744755035551?e=1755129600&v=beta&t=Kxe3RI9G9ws6OQGcV0Q8hYSCGzvYc-1Z7FrEexj0gy4" alt="Foto de Maristela Machado" onerror="this.onerror=null;this.src='https://placehold.co/100x100/333333/f0f0f0?text=MM';">
+                                <h4 class="name">Maristela Machado</h4>
+                                <p class="title">Security Operations Management</p>
+                                <p class="text">Focado no atingimento de metas e indicadores, demonstrava uma visão sistêmica do negócio de atuação, contribuindo com novas idéias, melhorias processuais e otimizações de fluxos.</p>
+                            </div>
+                            <!-- Recommendation 6 -->
+                            <div class="recommendation-slide">
+                                <img src="https://media.licdn.com/dms/image/v2/D4D03AQGeeJfxFjZ4WA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1722806772737?e=1755129600&v=beta&t=TCoWLqdxH1TPgrIz419K-tK6FN3P_07mUul-qCJc80U" alt="Foto de Claudia Peixoto Joventino" onerror="this.onerror=null;this.src='https://placehold.co/100x100/333333/f0f0f0?text=CJ';">
+                                <h4 class="name">Claudia Peixoto Joventino</h4>
+                                <p class="title">Analista de Riscos</p>
+                                <p class="text">Tive o prazer de trabalhar com o Jonatha por 5 anos! Espírito inovador e sempre atento e informado sobre as mudanças no mercado. Perfil crítico e analítico, sempre disposto a ajudar, adaptável, com visão do todo e um ótimo astral!</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="text-center mt-12">
+                    <button id="viewResumeBtn" class="font-semibold px-8 py-3 rounded-lg transition-colors text-lg" style="background-color: var(--primary-color); color: var(--dark-background);">
+                        Ver Detalhes do Currículo
+                    </button>
+                </div>
+                
+                <section id="contato" class="py-12 md:py-16">
+                    <h2 class="section-title">Contato</h2>
+                     <div class="flex justify-center">
+                        <div class="card p-6 md:p-10 w-full max-w-3xl">
+                            <h3 class="text-2xl font-semibold mb-6 text-center" style="color: var(--primary-color);">Entre em Contato</h3>
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-auto">
+                                <button id="emailContactBtn" class="font-semibold px-6 py-3 rounded-lg transition-colors text-center w-full sm:w-auto flex items-center justify-center" style="background-color: var(--primary-color); color: var(--dark-background);">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                    Email
+                                </button>
+                                <a href="https://www.linkedin.com/in/jonatha-neri-cardoso-4a9684227" target="_blank" rel="noopener noreferrer" class="font-semibold px-6 py-3 rounded-lg transition-colors text-center w-full sm:w-auto flex items-center justify-center" style="background-color: var(--primary-color); color: var(--dark-background);">
+                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                                    LinkedIn
+                                </a>
+                                 <button id="downloadCoverLetterBtn" class="font-semibold px-6 py-3 rounded-lg transition-colors text-center w-full sm:w-auto flex items-center justify-center" style="background-color: var(--primary-color); color: var(--dark-background);">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-5 w-5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                                    Carta de Apresentação
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+
+        <footer class="footer-bg text-center">
+            <p>&copy; 2025 Jonatha Neri Cardoso. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+
+    <div id="skillInfoModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-button" id="closeSkillModalBtn">&times;</button>
+            <h3 class="modal-title" id="modalSkillTitle"></h3>
+            <p class="modal-description" id="modalSkillDescription"></p>
+        </div>
+    </div>
+    
+    <div id="toolInfoModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-button" id="closeToolModalBtn">&times;</button>
+            <h3 class="modal-title" id="modalToolTitle"></h3>
+            <p class="modal-description" id="modalToolDescription"></p>
+            <a href="#" id="modalToolLink" target="_blank" rel="noopener noreferrer" class="modal-link">Visitar Site &rarr;</a>
+        </div>
+    </div>
+
+    <div id="emailContactModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-button" id="closeEmailContactModalBtn">&times;</button>
+            <h3 class="modal-title">Contato por E-mail</h3>
+            <p class="modal-description">Você pode me contatar diretamente pelo e-mail abaixo.</p>
+            <div class="bg-gray-800 p-3 rounded-lg text-center mb-4 border border-gray-600">
+                 <span id="emailAddress" class="text-lg font-mono">jonathacardoso@hotmail.com</span>
+            </div>
+            <div class="flex justify-center">
+                <button id="copyEmailBtn" class="w-full sm:w-1/2 font-semibold px-6 py-3 rounded-lg transition-colors flex items-center justify-center" style="background-color: var(--primary-color); color: var(--dark-background);">Copiar E-mail</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="coverLetterModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-button" id="closeCoverLetterModalBtn">&times;</button>
+            <h3 class="modal-title">Gerar Carta de Apresentação ✨</h3>
+            <p class="text-light-text mb-4">Cole a descrição da vaga abaixo:</p>
+            <textarea id="jobDescriptionInput" placeholder="Ex: Analista de Prevenção a Fraudes Sênior com foco em análise de dados e implementação de regras..."></textarea>
+            <button id="generateCoverLetterBtn">Gerar Carta</button>
+            <div id="coverLetterResult" class="mt-4 text-left"></div>
+        </div>
+    </div>
+
+    <div id="profileSummaryModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-button" id="closeProfileSummaryModalBtn">&times;</button>
+            <h3 class="modal-title">Resumo do Perfil</h3>
+            <div id="profileSummaryResult" class="mt-4 text-left"></div>
+        </div>
+    </div>
+    
+    <script>
+        // --- Preloader Logic ---
+        window.onload = () => {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                        document.body.classList.remove('loading');
+                    }, 750); 
+                }, 2000); 
+            } else {
+                 document.body.classList.remove('loading');
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Static Data ---
+            const staticProfileSummary = "Profissional com mais de 12 anos de experiência consolidada em prevenção e gestão de riscos, com forte domínio em análise de dados (SQL, Power BI) e na aplicação de metodologias de melhoria contínua (DMAIC, PDCA). Especialista em liderar equipes e implementar estratégias eficazes de mitigação de fraudes, garantindo a segurança e a integridade dos processos.";
+
+            const skillData = {
+                'Raciocínio lógico': "Capacidade de analisar problemas complexos, identificar padrões e estruturar soluções eficazes para a prevenção de fraudes.",
+                'Databases': "Experiência na manipulação e consulta de grandes volumes de dados para investigações e criação de relatórios.",
+                'Análise estatística': "Utilização de métodos estatísticos para identificar anomalias, tendências e padrões de comportamento suspeitos.",
+                'Excel': "Domínio avançado para análise de dados, criação de dashboards e relatórios dinâmicos que apoiam a tomada de decisão.",
+                'SQL': "Proficiência na extração e manipulação de dados de bancos de dados para investigações detalhadas e análises de risco.",
+                'Power BI': "Criação de dashboards interativos e visualizações de dados para monitorar KPIs de fraude e comunicar insights de forma clara.",
+                'Gestão de projetos': "Aplicação de práticas do PMBOK para planejar, executar e monitorar projetos de prevenção a fraudes, garantindo a entrega no prazo e escopo.",
+                'PDCA': "Uso do ciclo PDCA para implementar melhorias contínuas nos processos de prevenção, testando e validando novas estratégias.",
+                'SIPOC': "Mapeamento de processos de ponta a ponta para identificar pontos críticos e oportunidades de melhoria na segurança.",
+                'DMAIC': "Aplicação da metodologia DMAIC para resolver problemas complexos de fraude de forma estruturada e baseada em dados.",
+                'KPIs': "Definição e monitoramento de Indicadores-Chave de Desempenho para medir a eficácia das estratégias de prevenção.",
+                'OKRs': "Alinhamento de Objetivos e Resultados-Chave para direcionar os esforços da equipe de prevenção às metas estratégicas da empresa.",
+                'Melhoria contínua': "Mentalidade focada na busca constante por otimizações em processos, ferramentas e regras para combater fraudes de forma proativa.",
+                'Black Belt': "Certificação que comprova a expertise em liderar projetos de alta complexidade utilizando a metodologia Lean Six Sigma para otimizar resultados.",
+                'Kaizen': "Implementação de pequenas e contínuas melhorias nos fluxos de trabalho para aumentar a eficiência e a capacidade de detecção de fraudes.",
+                'Análise de fraudes': "Identificação e exame detalhado de atividades fraudulentas para entender os métodos dos fraudadores e desenvolver contramedidas.",
+                'Mitigação de riscos': "Desenvolvimento e implementação de estratégias e controles para reduzir a probabilidade e o impacto de perdas por fraude.",
+                'Investigação': "Condução de investigações aprofundadas sobre incidentes de fraude para determinar a causa raiz e recuperar perdas.",
+                'Parametrização de regras': "Criação e ajuste fino de regras de negócio em motores de decisão para bloquear transações suspeitas em tempo real.",
+                'Customer Success': "Foco em garantir que as soluções de prevenção a fraudes não impactem negativamente a experiência do cliente legítimo.",
+                'Liderança de equipes': "Capacidade de motivar, desenvolver e guiar equipes de prevenção para alcançar alta performance e resultados consistentes."
+            };
+            
+            const toolData = {
+                'Axur': { description: 'Líder em segurança digital, especializada na detecção e reação a ameaças online como uso indevido de marca e vazamento de dados.', link: 'https://www.axur.com/' },
+                'Serasa': { description: 'Bureau de crédito que oferece soluções de análise de dados para crédito, prevenção à fraude e marketing.', link: 'https://www.serasa.com.br/' },
+                'Provenir': { description: 'Plataforma global de software para tomada de decisão de risco, que utiliza IA para ajudar na análise de crédito.', link: 'https://www.provenir.com/' },
+                'Tempest': { description: 'A maior empresa brasileira de cibersegurança e prevenção a fraudes digitais, com portfólio completo de soluções.', link: 'https://www.tempest.com.br/' },
+                'PH3A': { description: 'Empresa de tecnologia focada em inteligência de dados para análise de crédito, prevenção a fraudes e validação de identidade.', link: 'https://www.ph3a.com.br/' },
+                'Celcoin': { description: 'Fintech que oferece infraestrutura de tecnologia financeira e bancária (Banking as a Service).', link: 'https://www.celcoin.com.br/' },
+                'Quod': { description: 'Bureau de crédito que utiliza dados do Cadastro Positivo para soluções de análise de risco e prevenção a fraudes.', link: 'https://www.quod.com.br/' },
+                'ClearSale': { description: 'Especialista global em soluções antifraude para e-commerce, mercado financeiro e outros segmentos.', link: 'https://www.clearsale.com.br/' },
+                'Cybersource': { description: 'Plataforma de gerenciamento de pagamentos da Visa, oferecendo processamento, prevenção de fraudes e segurança.', link: 'https://www.cybersource.com/' }
+            };
+
+            // --- Modal Elements ---
+            const skillModal = document.getElementById('skillInfoModal');
+            const toolModal = document.getElementById('toolInfoModal');
+            const profileSummaryModal = document.getElementById('profileSummaryModal');
+            const emailContactModal = document.getElementById('emailContactModal');
+            
+            const closeSkillModalBtn = document.getElementById('closeSkillModalBtn');
+            const closeToolModalBtn = document.getElementById('closeToolModalBtn');
+            const closeProfileSummaryModalBtn = document.getElementById('closeProfileSummaryModalBtn');
+            const closeEmailContactModalBtn = document.getElementById('closeEmailContactModalBtn');
+            
+            const modalSkillTitle = document.getElementById('modalSkillTitle');
+            const modalSkillDescription = document.getElementById('modalSkillDescription');
+            const modalToolTitle = document.getElementById('modalToolTitle');
+            const modalToolDescription = document.getElementById('modalToolDescription');
+            const modalToolLink = document.getElementById('modalToolLink');
+            const profileSummaryResult = document.getElementById('profileSummaryResult');
+            
+            // --- Buttons and Interactive Elements ---
+            const skillBadges = document.querySelectorAll('.skill-badge');
+            const showProfileSummaryBtn = document.getElementById('showProfileSummaryBtn');
+            const downloadCoverLetterBtn = document.getElementById('downloadCoverLetterBtn');
+            const emailContactBtn = document.getElementById('emailContactBtn');
+            const copyEmailBtn = document.getElementById('copyEmailBtn');
+            const emailAddressSpan = document.getElementById('emailAddress');
+            
+            // --- Carousel Logic ---
+            function setupCarousel(carouselSelector, trackSelector) {
+                const carousel = document.querySelector(carouselSelector);
+                const track = document.querySelector(trackSelector);
+
+                if (!track || !carousel) {
+                    console.error('Carousel or track not found for selector:', carouselSelector);
+                    return;
+                }
+                
+                // Clone slides for seamless loop effect
+                const slides = Array.from(track.children);
+                slides.forEach(slide => {
+                    const clone = slide.cloneNode(true);
+                    clone.setAttribute('aria-hidden', 'true');
+                    track.appendChild(clone);
+                });
+
+                let animationFrameId;
+                let currentX = 0;
+                let isPointerDown = false;
+                let isDragging = false;
+                let startX;
+                let initialTranslate;
+                let isPausedByUser = false;
+                
+                function animate() {
+                    if (!isPausedByUser) {
+                        currentX -= 0.3; // Slower animation speed for recommendations
+                        if (Math.abs(currentX) >= track.scrollWidth / 2) {
+                            currentX = 0;
+                        }
+                        track.style.transform = `translateX(${currentX}px)`;
+                    }
+                    animationFrameId = requestAnimationFrame(animate);
+                }
+                
+                function handlePointerDown(e) {
+                    isPausedByUser = true; 
+                    isPointerDown = true;
+                    isDragging = false;
+                    carousel.classList.add('grabbing');
+                    startX = e.touches ? e.touches[0].pageX : e.pageX;
+                    const style = window.getComputedStyle(track);
+                    const matrix = new DOMMatrixReadOnly(style.transform);
+                    initialTranslate = matrix.m41;
+                    currentX = initialTranslate;
+                    cancelAnimationFrame(animationFrameId); // Stop animation during drag
+                }
+
+                function handlePointerMove(e) {
+                    if (!isPointerDown) return;
+                    // e.preventDefault(); // This can prevent vertical scrolling on touch devices
+                    const x = e.touches ? e.touches[0].pageX : e.pageX;
+                    const walk = x - startX;
+                    if (Math.abs(walk) > 5) isDragging = true;
+                    track.style.transform = `translateX(${initialTranslate + walk}px)`;
+                }
+
+                function handlePointerUp(e) {
+                    if (!isPointerDown) return;
+                    isPointerDown = false;
+                    carousel.classList.remove('grabbing');
+                    const style = window.getComputedStyle(track);
+                    const matrix = new DOMMatrixReadOnly(style.transform);
+                    currentX = matrix.m41;
+                    
+                    if (!isDragging && e.target.closest('.logo-slide')) {
+                        const slide = e.target.closest('.logo-slide');
+                        const toolName = slide.dataset.tool;
+                        if(toolName) {
+                            const data = toolData[toolName];
+                            if (data && toolModal) {
+                                modalToolTitle.textContent = toolName;
+                                modalToolDescription.textContent = data.description;
+                                modalToolLink.href = data.link;
+                                toolModal.classList.add('show');
+                            }
+                        }
+                    }
+                    isDragging = false;
+                    requestAnimationFrame(animate); // Restart animation
+                }
+
+                carousel.addEventListener('mouseenter', () => { isPausedByUser = true; });
+                carousel.addEventListener('mouseleave', () => { isPausedByUser = false; });
+                
+                carousel.addEventListener('mousedown', handlePointerDown);
+                document.addEventListener('mousemove', handlePointerMove);
+                document.addEventListener('mouseup', handlePointerUp);
+                
+                carousel.addEventListener('touchstart', handlePointerDown, { passive: true });
+                document.addEventListener('touchmove', handlePointerMove, { passive: false });
+                document.addEventListener('touchend', handlePointerUp);
+
+                animate();
+            }
+
+            setupCarousel('#tools-logo-carousel', '#tools-logo-track');
+            setupCarousel('#company-logo-carousel', '#company-logo-track');
+            setupCarousel('#recommendations-carousel', '#recommendations-track');
+
+            // --- Animated Text Logic ---
+            const animatedWordSpan = document.getElementById('animated-word');
+            if(animatedWordSpan) {
+                const words = ['aprovações', 'confiança', 'conversão', 'segurança', 'inteligência'];
+                let wordIndex = 0;
+                let charIndex = 0;
+                let isDeleting = false;
+
+                function type() {
+                    const currentWord = words[wordIndex];
+                    
+                    if (isDeleting) {
+                        animatedWordSpan.textContent = currentWord.substring(0, charIndex - 1);
+                        charIndex--;
+                    } else {
+                        animatedWordSpan.textContent = currentWord.substring(0, charIndex + 1);
+                        charIndex++;
+                    }
+
+                    if (!isDeleting && charIndex === currentWord.length) {
+                        setTimeout(() => isDeleting = true, 2000); // Pause at end of word
+                    } else if (isDeleting && charIndex === 0) {
+                        isDeleting = false;
+                        wordIndex = (wordIndex + 1) % words.length;
+                    }
+
+                    const typingSpeed = isDeleting ? 100 : 200;
+                    setTimeout(type, typingSpeed);
+                }
+                
+                type();
+            }
+
+
+            // --- Modal Logic ---
+            const allModals = [skillModal, toolModal, profileSummaryModal, emailContactModal];
+            
+            const closeModals = (modal) => {
+                if(modal) modal.classList.remove('show');
+            }
+
+            [closeSkillModalBtn, closeToolModalBtn, closeProfileSummaryModalBtn, closeEmailContactModalBtn].forEach(btn => {
+                if(btn) btn.addEventListener('click', () => closeModals(btn.closest('.modal-overlay')));
+            });
+
+            allModals.forEach(modal => {
+                 if(modal) modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModals(modal);
+                });
+            });
+
+            // --- Skill Modal (Static) ---
+            skillBadges.forEach(badge => {
+                badge.addEventListener('click', () => {
+                    const skillName = badge.dataset.skill;
+                    const description = skillData[skillName] || "Descrição não encontrada.";
+                    
+                    modalSkillTitle.textContent = skillName.charAt(0).toUpperCase() + skillName.slice(1);
+                    modalSkillDescription.textContent = description;
+                    skillModal.classList.add('show');
+                });
+            });
+
+            // --- Profile Summary Modal (Static) ---
+            if (showProfileSummaryBtn) {
+                showProfileSummaryBtn.addEventListener('click', () => {
+                    profileSummaryResult.textContent = staticProfileSummary;
+                    profileSummaryModal.classList.add('show');
+                });
+            }
+
+            // --- Email Contact Modal Logic ---
+            if (emailContactBtn) {
+                emailContactBtn.addEventListener('click', () => {
+                    if(emailContactModal) emailContactModal.classList.add('show');
+                });
+            }
+
+            if (copyEmailBtn) {
+                copyEmailBtn.addEventListener('click', () => {
+                    const email = emailAddressSpan.textContent;
+                    const originalText = copyEmailBtn.innerHTML;
+
+                    const textArea = document.createElement("textarea");
+                    textArea.value = email;
+                    textArea.style.position = "fixed";
+                    textArea.style.top = "0";
+                    textArea.style.left = "0";
+                    textArea.style.opacity = "0";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+
+                    try {
+                        const successful = document.execCommand('copy');
+                        if(successful) {
+                            copyEmailBtn.innerHTML = 'Copiado!';
+                            setTimeout(() => {
+                                copyEmailBtn.innerHTML = originalText;
+                            }, 2000);
+                        }
+                    } catch (err) {
+                        console.error('Falha ao copiar o texto: ', err);
+                        copyEmailBtn.innerHTML = 'Falhou!';
+                         setTimeout(() => {
+                            copyEmailBtn.innerHTML = originalText;
+                        }, 2000);
+                    }
+                    document.body.removeChild(textArea);
+                });
+            }
+            
+            // --- PDF Generation ---
+            async function generateAndDownloadCoverLetterPDF() {
+                if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+                    console.error('jsPDF não está carregado.');
+                    alert('Erro ao gerar PDF: A biblioteca jsPDF não foi carregada.');
+                    return;
+                }
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                const letterContent = `Prezados(as) Senhores(as),\n\nCom grande entusiasmo, apresento meu perfil profissional, Jonatha Neri Cardoso, um Especialista e Gestor de Prevenção a Fraudes com mais de 12 anos de experiência. Minha trajetória é marcada pela atuação estratégica na mitigação de riscos e otimização de processos em diversos setores, como crédito, e-commerce e telecom.\n\nSou proficiente na utilização de ferramentas como Excel, SQL e Power BI para desenvolver insights acionáveis e dashboards estratégicos, que apoiam a tomada de decisão e garantem a integridade das operações. Minha liderança de equipes multifuncionais visa a colaboração para alcançar metas e aprimorar a eficiência contínua, aplicando metodologias como PDCA, SIPOC e DMAIC.\n\nPossuo certificações em Lean Six Sigma Black Belt e Gestão de Projetos (PMBOK), o que me permite implementar soluções eficazes e gerenciar projetos complexos. Minha experiência abrange desde a parametrização de regras de negócio até o atendimento a canais regulatórios como Reclame Aqui, Bacen e Procon.\n\nAcredito que minhas habilidades em raciocínio lógico, análise de dados estatísticos, criatividade e investigação, aliadas à minha experiência em gestão de produtos de prevenção a fraudes (Serasa, PH3A, Clearsale, Provenir), me capacitam a contribuir significativamente para a segurança e o sucesso de sua organização.\n\nAgradeço a atenção e coloco-me à disposição para discutir como minhas qualificações podem agregar valor à sua equipe.\n\nAtenciosamente,\nJonatha Neri Cardoso`;
+
+                const lines = doc.splitTextToSize(letterContent, 180);
+                doc.setFontSize(12);
+                doc.text(lines, 15, 20); 
+
+                doc.save('Carta_de_Apresentacao_Jonatha_Neri_Cardoso.pdf');
+            }
+            if (downloadCoverLetterBtn) {
+                downloadCoverLetterBtn.addEventListener('click', generateAndDownloadCoverLetterPDF);
+            }
+            
+            // --- Mobile Menu ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // --- Page Switching Logic ---
+            const mainContent = document.getElementById('main-content');
+            const projectsPage = document.getElementById('projects-page');
+            const allNavLinks = document.querySelectorAll('header .nav-link, #mobile-menu .nav-link');
+            const viewResumeBtn = document.getElementById('viewResumeBtn');
+
+            function updateActiveNav(activeHref) {
+                allNavLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === activeHref) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            function showPage(pageToShow, targetId) {
+                if (pageToShow === 'projects') {
+                    mainContent.classList.add('hidden');
+                    projectsPage.classList.remove('hidden');
+                    document.body.classList.add('projects-bg-active');
+                } else { // resume
+                    projectsPage.classList.add('hidden');
+                    mainContent.classList.remove('hidden');
+                    document.body.classList.remove('projects-bg-active');
+                }
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }, 50);
+                } else {
+                    window.scrollTo(0, 0);
+                }
+            }
+
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    
+                    if (targetId === '#projetos') {
+                        showPage('projects', '#resumo-main');
+                        updateActiveNav('#projetos');
+                    } else if (targetId === '#resumo') {
+                        showPage('resume', '#competencias');
+                        updateActiveNav('#resumo');
+                    } else if (targetId === '#contato') {
+                        showPage('projects', '#contato');
+                        updateActiveNav('#contato');
+                    }
+                    
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            if (viewResumeBtn) {
+                viewResumeBtn.addEventListener('click', () => {
+                    showPage('resume', '#competencias');
+                    updateActiveNav('#resumo');
+                });
+            }
+
+
+            // --- Accordion for Experience ---
+            const experienceHeaders = document.querySelectorAll('.experience-header');
+            experienceHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const details = header.nextElementSibling; 
+                    const icon = header.querySelector('.expand-icon');
+
+                    if (details && details.classList.contains('experience-details')) {
+                        const isHidden = details.classList.toggle('hidden');
+                        icon.textContent = isHidden ? '+' : '−'; 
+                        icon.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+                    }
+                });
+            });
+
+            // --- Theme Switcher ---
+            const themeSwitcherBtn = document.getElementById('theme-switcher');
+            const themes = ['zima', 'ocean', 'sunset'];
+            let currentThemeIndex = 0;
+
+            themeSwitcherBtn.addEventListener('click', () => {
+                currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+                const nextTheme = themes[currentThemeIndex];
+                document.body.setAttribute('data-theme', nextTheme);
+            });
+        });
+    </script>
+</body>
+</html>
